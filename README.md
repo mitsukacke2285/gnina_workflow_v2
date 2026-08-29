@@ -169,11 +169,11 @@ These are included with Python and **do not need to be installed separately**.
 
 # Installation
 
-## 1. Open WSL
+## 1. Open WSL or Ubuntu
 
 The workflow was developed for **Windows Subsystem for Linux (WSL)**.
 
-Open your WSL terminal before proceeding.
+Open your WSL or Ubuntu terminal before proceeding.
 
 A dedicated Conda environment is recommended to prevent dependency conflicts with other Python projects.
 
