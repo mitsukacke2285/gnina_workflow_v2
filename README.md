@@ -1,5 +1,11 @@
 # Simplified Docking with Gnina (SDoG) - a fully automated Gnina workflow
 
+
+
+
+
+
+
  / \__
 (    @\___
  /         O
