@@ -377,9 +377,9 @@ If these commands execute successfully, the core software environment is install
 The workflow is divided into three scripts:
 
 ```text
-Protein_preparation.py
-Ligand_preparation.py
-Docking_with_Gnina.py
+protein_preparation.py
+ligand_extraction_and_preparation.py
+in_silico_screening_and_reporting.py
 ```
 
 The scripts should generally be executed in this order:
