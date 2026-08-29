@@ -1,17 +1,5 @@
 # Simplified Docking with Gnina (SDoG) - a fully automated Gnina workflow
 
-
-
-
-
-
-
- / \__
-(    @\___
- /         O
-/   (_____/
-/_____/   U
-
 A semi-automated workflow for docking small-molecule ligands into protein targets. The workflow is designed to support **hit-to-lead** and **lead-optimization** projects while remaining accessible to both beginner and advanced users.
 
 The workflow takes a **PDB ID** as the primary target input and automates protein preparation, identification and preparation of a co-crystallized ligand, ligand preparation, and molecular docking with **GNINA**.
