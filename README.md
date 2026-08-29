@@ -1,4 +1,4 @@
-# Semi-Automated Small-Molecule Docking Workflow
+# Simplified Docking with Gnina (SDoG) - a fully automated Gnina workflow
 
 A semi-automated workflow for docking small-molecule ligands into protein targets. The workflow is designed to support **hit-to-lead** and **lead-optimization** projects while remaining accessible to both beginner and advanced users.
 
