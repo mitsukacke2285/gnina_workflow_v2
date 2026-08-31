@@ -322,7 +322,7 @@ def unknown_site_docking(
 # 4. Docking report
 # ============================================================================
 
-def report(docking_results, pdb_id):
+def report(docking_results, pdb_id, rmsd_values=None):
     """
     Convert Gnina SDF output into a CSV report.
 
@@ -345,7 +345,7 @@ def report(docking_results, pdb_id):
         "CNNscore",
         "CNNaffinity",
         "CNN_VS",
-        "CNNaffinity_variance",
+        "CNNaffinity_variance"
     ]
 
     # Normalize input
@@ -421,6 +421,21 @@ def report(docking_results, pdb_id):
             )
         )
 
+       # ------------------------------------------------------------------------
+    # Add RMSD values
+    # ------------------------------------------------------------------------
+
+    if rmsd_values is not None:
+
+        if len(rmsd_values) != len(combo_df):
+
+            raise ValueError(
+                "Number of RMSD values does not match "
+                "number of docking poses."
+            )
+
+        combo_df["RMSD"] = rmsd_values
+    
     # ------------------------------------------------------------------------
     # Remove RDKit molecule column from CSV
     # ------------------------------------------------------------------------
@@ -496,12 +511,16 @@ def rmsd_calculation(
     pdb_id,
 ):
     """
-    Calculate MCS RMSD between the cognate ligand and docked poses.
+    Calculate MCS RMSD between the cognate ligand
+    and every docked pose.
+
+    Returns
+    -------
+    list[float]
+        RMSD value for each docking pose.
     """
 
-    print(
-        "\n=== Running MCS RMSD calculation ==="
-    )
+    print("\n=== Running MCS RMSD calculation ===")
 
     cognate_path = os.path.join(
         ligand_directory,
@@ -523,28 +542,23 @@ def rmsd_calculation(
             f"Docking result not found: {docking_path}"
         )
 
-    cognate = Chem.MolFromMolFile(
-        cognate_path
-    )
+    cognate = Chem.MolFromMolFile(cognate_path)
 
     if cognate is None:
         raise ValueError(
             f"Could not read cognate ligand: {cognate_path}"
         )
 
-    poses = Chem.SDMolSupplier(
-        docking_path
-    )
+    poses = Chem.SDMolSupplier(docking_path)
+
+    rmsd_values = []
 
     log_path = os.path.join(
         docking_results_directory,
         f"{ligand_id}_{pdb_id}_rmsd.log",
     )
 
-    with open(
-        log_path,
-        "w",
-    ) as log_file:
+    with open(log_path, "w") as log_file:
 
         log_file.write(
             "Pose_Index\tNum_Matches\tRMSD\n"
@@ -553,6 +567,7 @@ def rmsd_calculation(
         for i, pose in enumerate(poses):
 
             if pose is None:
+                rmsd_values.append(None)
                 continue
 
             RDLogger.DisableLog(
@@ -563,6 +578,8 @@ def rmsd_calculation(
                 cognate,
                 pose,
             )
+
+            rmsd_values.append(rmsd)
 
             line = (
                 f"{i}\t"
@@ -579,7 +596,7 @@ def rmsd_calculation(
         f"{log_path}"
     )
 
-    return log_path
+    return rmsd_values
 
 
 # ============================================================================
@@ -616,7 +633,7 @@ def docking_main(
             cnn_flag,
         )
 
-        rmsd_calculation(
+        rmsd_values = rmsd_calculation(
             ligand_directory,
             docking_results_directory,
             ligand_id,
@@ -626,6 +643,7 @@ def docking_main(
         report(
             output,
             pdb_id,
+            rmsd_values=rmsd_values,
         )
 
     # ------------------------------------------------------------------------
@@ -908,3 +926,46 @@ def gnina(ligand_id):
         gpu_flag=gpu_flag,
         cnn_flag=cnn_flag,
     )
+
+    # ------------------------------------------------------------------------
+    # User settings
+    # ------------------------------------------------------------------------
+
+    (
+        selection,
+        exhaustiveness,
+        gpu_flag,
+        cnn_flag,
+    ) = get_user_settings()
+
+    print(
+        f"\nSelected docking mode: {selection}"
+    )
+
+    print(
+        f"Exhaustiveness: {exhaustiveness}"
+    )
+
+    print(
+        f"GPU: {'enabled' if not gpu_flag else 'disabled'}"
+    )
+
+    print(
+        f"CNN scoring: "
+        f"{'enabled' if not cnn_flag else 'disabled'}"
+    )
+
+    # ------------------------------------------------------------------------
+    # Run docking
+    # ------------------------------------------------------------------------
+
+    docking_main(
+        selection=selection,
+        pdb_id=pdb_id,
+        ligand_id=ligand_id,
+        exhaustiveness=exhaustiveness,
+        gpu_flag=gpu_flag,
+        cnn_flag=cnn_flag,
+    )
+
+
