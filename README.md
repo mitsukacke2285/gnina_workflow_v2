@@ -146,12 +146,14 @@ The `requirements.txt` file contains:
 * **Biopython** — biological structure and sequence handling
 * **MDAnalysis** — molecular structure and trajectory analysis
 * **NumPy** — numerical computing
+* **Pandas** — data analysis and manipulation tool
 * **RDKit** — cheminformatics and molecular manipulation
 * **OpenMM** — molecular simulation and energy minimization
 * **PDBFixer** — protein structure preparation and repair
-* **Scrubber** — ligand preparation and standardization
+* **MolScrub** — ligand preparation and standardization
 * **useful_rdkit_utils** — RDKit utility functions
 * **Requests** — downloading files from web resources
+* **Open Babel** — converting chemical file formats and manage molecular data 
 
 ### Dependencies not included in `requirements.txt`
 
