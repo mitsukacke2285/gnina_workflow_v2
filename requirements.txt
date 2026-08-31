@@ -1,0 +1,11 @@
+biopython
+pdbfixer
+mdanalysis
+pandas
+rdkit
+openmm
+openbabel
+numpy
+molscrub
+useful_rdkit_utils
+requests
