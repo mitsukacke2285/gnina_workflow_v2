@@ -5,7 +5,6 @@
 
 
 import config
-import numpy as np
 import MDAnalysis as mda
 from molscrub import Scrub
 from rdkit import Chem
@@ -14,7 +13,6 @@ from rdkit.Chem.MolStandardize import rdMolStandardize
 from rdkit.Chem.EnumerateStereoisomers import EnumerateStereoisomers, StereoEnumerationOptions
 import subprocess
 import os
-import json
 import requests
 
 # ### Set protein directory ###
@@ -180,17 +178,5 @@ def scrubbing_ligands(ligand_id):
     except Exception as e:
         print("Ligand preparation failed:", e)
 
-# ------------------------------------------------------------------------------
-# Entry point
-# ------------------------------------------------------------------------------
-
-# if __name__ == "__main__":
-#     with open('params.json', 'r') as f:
-#         params = json.load(f)
-#     pdb_id = params['pdb_id']
-#     ligand_id = select_ligand_from_pdb()
-#     download_ideal_ligand()
-#     corrected_pose_with_H = fix_and_align(ideal_mol = Chem.MolFromMolFile(f"{ligand_directory}/{ligand_id}_ideal.sdf", removeHs=True), pose_mol = Chem.MolFromPDBFile(f"{ligand_directory}/{ligand_id}_fromPDB.pdb", removeHs=True))
-#     scrubbing_ligands()
 
 
